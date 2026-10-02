@@ -156,3 +156,103 @@ body{background:#f5f6fa;color:var(--text)}
   .month-pill{min-width:150px;font-size:14px}
   .main-content{padding-left:15px;padding-right:15px}
 }
+
+/* Phase 8 — Compact dashboard polish / mobile UX */
+html{
+  -webkit-text-size-adjust:100%;
+  text-size-adjust:100%;
+  overscroll-behavior-x:none;
+  overflow-x:hidden;
+}
+body{
+  overflow-x:hidden;
+  -webkit-user-select:none;
+  user-select:none;
+  -webkit-touch-callout:none;
+  -webkit-tap-highlight-color:transparent;
+}
+input,textarea,select,[contenteditable="true"]{
+  -webkit-user-select:text;
+  user-select:text;
+  -webkit-touch-callout:default;
+}
+img{user-select:none;-webkit-user-drag:none}
+.topbar{height:74px;grid-template-columns:46px 1fr 48px;padding:0 14px}
+.icon-btn{font-size:27px}
+.brand-logo{width:154px;height:52px}
+.avatar-btn{width:48px;height:48px;font-size:19px}
+.main-content{padding:20px 20px 96px;max-width:760px}
+.page-head{gap:8px;align-items:center}
+.page-head h1,.page-title-row h1{font-size:27px;line-height:1.08;letter-spacing:-.55px}
+.page-head p,.page-title-row p{font-size:16px;line-height:1.28}
+.month-pill{min-width:150px;height:48px;padding:0 13px;border-radius:25px;font-size:14px;white-space:nowrap}
+.trial-card{min-height:88px;margin:16px 0 18px;padding:13px 14px;border-radius:18px;gap:10px}
+.trial-icon{width:42px;height:42px;font-size:19px}
+.trial-copy{min-width:0}
+.trial-copy strong{font-size:17px;line-height:1.1}
+.trial-copy span{font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.light-btn{min-width:88px;padding:9px 12px;border-radius:22px;font-size:13px}
+.stats-grid{gap:10px}
+.stat-card{min-height:155px;padding:15px;border-radius:19px}
+.stat-icon{width:44px;height:44px;margin-bottom:10px;font-size:21px}
+.stat-label{font-size:12px;letter-spacing:1px}
+.stat-value{font-size:29px;line-height:1.05;margin:8px 0 1px}
+.stat-sub{font-size:14px;line-height:1.2}
+.analytics-card{margin-top:14px;padding:16px;border-radius:20px}
+.analytics-card .section-title-row{margin:0 0 12px}
+.analytics-card .section-title-row h2{font-size:21px}
+.analytics-card .section-title-row small{font-size:12px}
+.analytics-mini-grid{gap:8px}
+.analytics-mini-grid>div{padding:11px 12px;border-radius:14px}
+.analytics-mini-grid span{font-size:11px}
+.analytics-mini-grid strong{font-size:20px}
+.analytics-history{margin-top:13px}
+.analytics-history-head{margin-bottom:7px}
+.analytics-history-head strong{font-size:15px}
+.analytics-history-head small{font-size:11px}
+.section-title-row{margin:18px 0 9px}
+.section-title-row h2{font-size:21px}
+.text-btn{font-size:14px}
+.list-card.empty{min-height:86px;padding:18px;border-radius:18px;font-size:14px}
+.primary-btn.large{min-height:54px;margin-top:16px;border-radius:16px;font-size:14px;letter-spacing:1px}
+.bottom-nav{height:78px}
+.nav-item{gap:3px}
+.nav-item span{font-size:23px}
+.nav-item small{font-size:12px}
+.cards-list{gap:10px;margin-top:12px}
+.student-card,.payment-card{padding:12px;border-radius:17px}
+.student-avatar{width:46px;height:46px;font-size:18px}
+.student-name{font-size:16px}
+.student-meta{font-size:12px}
+.payment-name{font-size:16px}
+.payment-amount{font-size:21px}
+@media(max-width:480px){
+  .topbar{height:72px;grid-template-columns:42px 1fr 48px;padding:0 12px}
+  .brand-logo{width:150px;height:50px}
+  .avatar-btn{width:48px;height:48px}
+  .main-content{padding:18px 18px 96px}
+  .page-head{align-items:center}
+  .page-head h1,.page-title-row h1{font-size:26px}
+  .page-head p,.page-title-row p{font-size:15px}
+  .month-pill{min-width:146px;height:46px;font-size:13px}
+  .trial-card{min-height:84px;padding:12px 13px}
+  .trial-copy strong{font-size:16px}
+  .trial-copy span{font-size:11px}
+  .light-btn{min-width:82px;padding:8px 10px;font-size:12px}
+  .stats-grid{gap:9px}
+  .stat-card{min-height:148px;padding:14px;border-radius:18px}
+  .stat-icon{width:42px;height:42px;margin-bottom:9px;font-size:20px}
+  .stat-label{font-size:11px}
+  .stat-value{font-size:27px}
+  .stat-sub{font-size:13px}
+  .analytics-card{padding:14px;border-radius:18px}
+  .analytics-card .section-title-row h2{font-size:20px}
+  .analytics-mini-grid>div{padding:10px}
+  .analytics-mini-grid strong{font-size:19px}
+  .section-title-row h2{font-size:20px}
+  .list-card.empty{min-height:80px}
+  .primary-btn.large{min-height:52px;font-size:13px}
+  .bottom-nav{height:76px}
+  .nav-item span{font-size:22px}
+  .nav-item small{font-size:11px}
+}
