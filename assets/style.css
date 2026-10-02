@@ -553,3 +553,57 @@ body:has(.modal-layer.show),body:has(.confirm-layer.show){overflow:hidden}
   .receipt-note{padding:7px 12px 10px}
   .receipt-actions{padding-left:9px;padding-right:9px}
 }
+
+
+/* Final polish — subtle premium live ambient background */
+html,body{
+  min-height:100%;
+  overflow-x:hidden;
+}
+body{
+  position:relative;
+  background:#f6f7fb;
+}
+body::before,
+body::after{
+  content:"";
+  position:fixed;
+  inset:-18%;
+  pointer-events:none;
+  z-index:0;
+  background:
+    radial-gradient(circle at 15% 18%, rgba(93,80,235,.16) 0%, rgba(93,80,235,0) 28%),
+    radial-gradient(circle at 84% 26%, rgba(255,174,76,.13) 0%, rgba(255,174,76,0) 25%),
+    radial-gradient(circle at 50% 90%, rgba(39,185,137,.10) 0%, rgba(39,185,137,0) 26%);
+  filter:blur(30px);
+  transform:translate3d(0,0,0) scale(1.02);
+  will-change:transform;
+  animation:feeAmbientOne 16s ease-in-out infinite alternate;
+}
+body::after{
+  background:
+    radial-gradient(circle at 76% 72%, rgba(91,78,231,.12) 0%, rgba(91,78,231,0) 25%),
+    radial-gradient(circle at 25% 72%, rgba(76,181,255,.08) 0%, rgba(76,181,255,0) 24%);
+  animation:feeAmbientTwo 21s ease-in-out infinite alternate;
+}
+body > *{
+  position:relative;
+  z-index:1;
+}
+.app-shell{
+  position:relative;
+  isolation:isolate;
+}
+@keyframes feeAmbientOne{
+  0%{transform:translate3d(-3%, -2%, 0) scale(1.02)}
+  50%{transform:translate3d(2%, 3%, 0) scale(1.07)}
+  100%{transform:translate3d(-1%, 5%, 0) scale(1.04)}
+}
+@keyframes feeAmbientTwo{
+  0%{transform:translate3d(3%, 2%, 0) scale(1.04)}
+  50%{transform:translate3d(-4%, -2%, 0) scale(1.08)}
+  100%{transform:translate3d(2%, -4%, 0) scale(1.03)}
+}
+@media (prefers-reduced-motion:reduce){
+  body::before,body::after{animation:none}
+}

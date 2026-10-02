@@ -148,22 +148,48 @@ async function shareReceiptToWhatsApp(id){
   const f=state.fees.find(x=>x.id===id),s=state.students.find(x=>x.id===f?.studentId);
   if(!f||!s||!s.phone){toast('Student WhatsApp number is not available.');return}
   const phone=normalizedPhone(s.phone),text=receiptMessage(f,s);
-  const safeName=String(s.name||'Student').replace(/[^a-z0-9]+/gi,'-').replace(/^-|-$/g,'')||'Student';
-  const fileName=`EZEE-VISION-Fee-Receipt-${safeName}-${String(f.month||state.month).replace('-','')}.png`;
   try{
-    toast('Preparing receipt image…');
+    toast('Preparing professional receipt…');
     const blob=await buildReceiptPosterBlob(f,s);
-    // Save the finished poster locally first so it is ready when the exact WhatsApp chat opens.
-    const url=URL.createObjectURL(blob);
-    const a=document.createElement('a'); a.href=url; a.download=fileName; document.body.appendChild(a); a.click(); a.remove();
-    setTimeout(()=>URL.revokeObjectURL(url),3000);
-    toast(`Receipt ready. Opening ${s.name}'s WhatsApp chat…`);
-  }catch(err){toast('Receipt image could not be prepared, opening WhatsApp with the message instead.');}
-  const exactChat=`whatsapp://send?phone=${phone}&text=${encodeURIComponent(text)}`;
-  const webChat=`https://wa.me/${phone}?text=${encodeURIComponent(text)}`;
-  let opened=false;
-  try{window.location.href=exactChat;opened=true}catch(_){opened=false}
-  setTimeout(()=>{if(document.visibilityState==='visible'&&!document.hidden){window.open(webChat,'_blank')|| (window.location.href=webChat)}},900);
+    let copiedImage=false;
+    try{
+      if(navigator.clipboard?.write && window.ClipboardItem){
+        const item=new ClipboardItem({'image/png':blob});
+        await navigator.clipboard.write([item]);
+        copiedImage=true;
+      }
+    }catch(_){copiedImage=false}
+
+    // When file sharing is supported, offer the native Android share sheet with
+    // the finished receipt + message. Otherwise open the exact student's WhatsApp
+    // chat with the message pre-filled. No automatic file download is triggered.
+    if(!copiedImage && navigator.share && navigator.canShare){
+      try{
+        const safeName=String(s.name||'Student').replace(/[^a-z0-9]+/gi,'-').replace(/^-|-$/g,'')||'Student';
+        const file=new File([blob],`EZEE-VISION-Fee-Receipt-${safeName}.png`,{type:'image/png'});
+        if(navigator.canShare({files:[file]})){
+          await navigator.share({
+            files:[file],
+            title:`EZEE VISION Fee Receipt — ${s.name}`,
+            text
+          });
+          return;
+        }
+      }catch(err){
+        if(err?.name==='AbortError') return;
+      }
+    }
+
+    const exactChat=`https://wa.me/${phone}?text=${encodeURIComponent(text)}`;
+    toast(copiedImage
+      ? `Receipt copied. Opening ${s.name}'s WhatsApp chat — paste the image and send.`
+      : `Opening ${s.name}'s WhatsApp chat…`);
+    window.location.href=exactChat;
+  }catch(err){
+    const exactChat=`https://wa.me/${phone}?text=${encodeURIComponent(text)}`;
+    toast('Receipt image could not be prepared. Opening WhatsApp with the message.');
+    window.location.href=exactChat;
+  }
 }
 function openReceipt(id){const f=state.fees.find(x=>x.id===id),s=state.students.find(x=>x.id===f?.studentId);if(!f||!s)return;const d=receiptData(f,s);$('receiptDate').textContent=paymentDateLabel(f.paymentDate||isoToday());$('receiptBody').innerHTML=`<div class="receipt-row"><span>Receipt No.</span><strong>#${escapeHtml(d.receiptNo)}</strong></div><div class="receipt-row"><span>Student Name</span><strong>${escapeHtml(s.name)}</strong></div><div class="receipt-row"><span>Father / Guardian</span><strong>${escapeHtml(s.father||'—')}</strong></div><div class="receipt-row"><span>Class / Batch</span><strong>${escapeHtml(d.classBatch)}</strong></div><div class="receipt-row"><span>Month / Period</span><strong>${escapeHtml(d.month)}</strong></div><div class="receipt-row"><span>Payment Date</span><strong>${escapeHtml(d.paymentDate)}</strong></div><div class="receipt-row"><span>Payment Mode</span><strong>${escapeHtml(d.mode)}</strong></div><div class="receipt-row"><span>Due Date</span><strong>${escapeHtml(d.dueDate)}</strong></div><div class="receipt-row receipt-address"><span>Address</span><strong>${escapeHtml(s.address||'—')}</strong></div><div class="receipt-row receipt-words"><span>Amount in Words</span><strong>${escapeHtml(numberToWordsINR(d.paidAmount))}</strong></div>`;$('receiptAmountLabel').textContent='AMOUNT PAID';$('receiptAmount').textContent=money(d.paidAmount);$('receiptModal').dataset.feeId=id;$('receiptModal').classList.add('show')}
 function closeReceipt(){$('receiptModal').classList.remove('show')}
