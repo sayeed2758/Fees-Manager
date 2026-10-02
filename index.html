@@ -5,6 +5,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, viewport-fit=cover" />
   <meta name="theme-color" content="#4739d5" />
   <meta name="description" content="FEE MANAGER — EZEE VISION CHAMPUA" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="FEE MANAGER" />
+  <link rel="manifest" href="manifest.json" />
+  <link rel="icon" type="image/png" sizes="192x192" href="assets/pwa-icon-192.png" />
+  <link rel="apple-touch-icon" href="assets/pwa-icon-192.png" />
   <title>FEE MANAGER</title>
   <link rel="stylesheet" href="assets/style.css" />
 </head>
@@ -175,5 +182,12 @@
   </div>
   <div id="toast" class="toast"></div>
   <script type="module" src="assets/app.js"></script>
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./sw.js', { scope: './' }).catch(() => {});
+      });
+    }
+  </script>
 </body>
 </html>
