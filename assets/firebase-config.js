@@ -3,7 +3,7 @@
 // This configuration is intended for a browser app. Do not put Admin SDK/service-account private keys here.
 
 export const firebaseConfig = {
-  apiKey: 'YOUR_API_KEY',
+  apiKey: 'AIzaSyBKz97Xul8gNbZU-XxYx3EDJmHPviRn7Lg',
   authDomain: 'YOUR_PROJECT.firebaseapp.com',
   projectId: 'YOUR_PROJECT_ID',
   storageBucket: 'YOUR_PROJECT.firebasestorage.app',
