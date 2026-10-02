@@ -78,18 +78,108 @@ function receiptMessage(f,s){const d=receiptData(f,s);return `Dear ${s.father||'
 function canvasRoundRect(ctx,x,y,w,h,r){const rr=Math.min(r,w/2,h/2);ctx.beginPath();ctx.moveTo(x+rr,y);ctx.arcTo(x+w,y,x+w,y+h,rr);ctx.arcTo(x+w,y+h,x,y+h,rr);ctx.arcTo(x,y+h,x,y,rr);ctx.arcTo(x,y,x+w,y,rr);ctx.closePath()}
 function canvasText(ctx,text,x,y,maxWidth,lineHeight,font){ctx.font=font;const words=String(text||'').split(/\s+/);let line='';for(const word of words){const test=line?line+' '+word:word;if(ctx.measureText(test).width>maxWidth&&line){ctx.fillText(line,x,y);y+=lineHeight;line=word}else line=test}if(line)ctx.fillText(line,x,y);return y}
 function loadReceiptLogo(){return new Promise((resolve,reject)=>{const img=new Image();img.onload=()=>resolve(img);img.onerror=reject;img.src='assets/ezee-vision-logo.png'})}
-async function buildReceiptPosterBlob(f,s){const d=receiptData(f,s),canvas=document.createElement('canvas');canvas.width=1080;canvas.height=1350;const ctx=canvas.getContext('2d');ctx.fillStyle='#f5f6fb';ctx.fillRect(0,0,canvas.width,canvas.height);const grad=ctx.createLinearGradient(0,0,1080,0);grad.addColorStop(0,'#3026b6');grad.addColorStop(1,'#604be7');ctx.fillStyle=grad;ctx.fillRect(0,0,1080,330);try{const logo=await loadReceiptLogo();const ratio=Math.min(760/logo.naturalWidth,155/logo.naturalHeight);const lw=logo.naturalWidth*ratio,lh=logo.naturalHeight*ratio;ctx.drawImage(logo,(1080-lw)/2,36,lw,lh)}catch(_){ctx.fillStyle='#fff';ctx.font='800 54px Arial';ctx.textAlign='center';ctx.fillText('EZEE VISION',540,120)}ctx.textAlign='left';ctx.fillStyle='#fff';ctx.font='800 44px Arial';ctx.fillText('FEE RECEIPT',58,238);ctx.font='400 28px Arial';ctx.globalAlpha=.88;ctx.fillText('Official payment receipt',58,282);ctx.globalAlpha=1;ctx.font='400 28px Arial';ctx.textAlign='right';ctx.fillText(paymentDateLabel(f.paymentDate||isoToday()),1022,255);ctx.textAlign='left';ctx.fillStyle='#fff';canvasRoundRect(ctx,42,304,996,960,30);ctx.fill();const rows=[['Receipt No.',d.receiptNo],['Student Name',s.name],['Father / Guardian',s.father||'—'],['Class / Batch',d.classBatch],['Month / Period',d.month],['Due Date',d.dueDate],['Payment Date',d.paymentDate],['Payment Mode',d.mode]];let y=370;for(const [label,value] of rows){ctx.fillStyle='#778199';ctx.font='400 24px Arial';ctx.fillText(label,76,y);ctx.fillStyle='#181c2e';ctx.font='700 28px Arial';canvasText(ctx,value,430,y,570,34,'700 28px Arial');ctx.strokeStyle='#e6e9f0';ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(76,y+30);ctx.lineTo(1004,y+30);ctx.stroke();y+=92}ctx.fillStyle='#f7f8fc';canvasRoundRect(ctx,76,y+5,928,170,24);ctx.fill();ctx.fillStyle='#7e889a';ctx.font='700 23px Arial';ctx.fillText('AMOUNT PAID',106,y+56);ctx.fillStyle='#28224f';ctx.font='800 56px Arial';ctx.fillText(money(d.paidAmount),106,y+122);ctx.fillStyle='#e0f5e8';canvasRoundRect(ctx,842,y+42,122,76,18);ctx.fill();ctx.fillStyle='#178247';ctx.font='800 24px Arial';ctx.fillText('✓ PAID',866,y+90);ctx.fillStyle='#6e788e';ctx.font='400 21px Arial';canvasText(ctx,numberToWordsINR(d.paidAmount),76,y+210,900,30,'400 21px Arial');ctx.fillStyle='#7a8293';ctx.font='400 18px Arial';ctx.fillText('EZEE VISION CHAMPUA • FEE MANAGER',76,1240);return new Promise((resolve,reject)=>canvas.toBlob(blob=>blob?resolve(blob):reject(new Error('Poster generation failed.')),'image/png',.94))}
+async function buildReceiptPosterBlob(f,s){
+  const d=receiptData(f,s);
+  const canvas=document.createElement('canvas');
+  canvas.width=1080; canvas.height=1400;
+  const ctx=canvas.getContext('2d');
+  const W=canvas.width;
+  ctx.fillStyle='#f4f6fb'; ctx.fillRect(0,0,W,canvas.height);
+
+  const grad=ctx.createLinearGradient(0,0,W,0);
+  grad.addColorStop(0,'#3125b8'); grad.addColorStop(.55,'#4735d4'); grad.addColorStop(1,'#654fe9');
+  ctx.fillStyle=grad; ctx.fillRect(0,0,W,345);
+
+  try{
+    const logo=await loadReceiptLogo();
+    const ratio=Math.min(610/logo.naturalWidth,132/logo.naturalHeight);
+    const lw=logo.naturalWidth*ratio, lh=logo.naturalHeight*ratio;
+    ctx.drawImage(logo,(W-lw)/2,30,lw,lh);
+  }catch(_){
+    ctx.fillStyle='#fff'; ctx.font='800 52px Arial'; ctx.textAlign='center'; ctx.fillText('EZEE VISION',W/2,120);
+  }
+
+  ctx.textAlign='left'; ctx.fillStyle='#fff';
+  ctx.font='800 42px Arial'; ctx.fillText('FEE RECEIPT',58,235);
+  ctx.font='400 25px Arial'; ctx.globalAlpha=.88; ctx.fillText('Official payment receipt • FEE MANAGER',58,277); ctx.globalAlpha=1;
+  ctx.textAlign='right'; ctx.font='700 23px Arial'; ctx.fillText(d.paymentDate,W-58,245); ctx.font='400 18px Arial'; ctx.globalAlpha=.82; ctx.fillText(d.receiptNo,W-58,278); ctx.globalAlpha=1;
+
+  ctx.fillStyle='#fff'; canvasRoundRect(ctx,40,320,W-80,1018,30); ctx.fill();
+  ctx.strokeStyle='#e1e5ef'; ctx.lineWidth=2; ctx.stroke();
+
+  const rows=[
+    ['Receipt No.',d.receiptNo],['Student Name',s.name],['Father / Guardian',s.father||'—'],
+    ['Class / Batch',d.classBatch],['Month / Period',d.month],['Due Date',d.dueDate||'—'],
+    ['Payment Date',d.paymentDate],['Payment Mode',d.mode]
+  ];
+  let y=388;
+  for(const [label,value] of rows){
+    ctx.textAlign='left'; ctx.fillStyle='#78839a'; ctx.font='400 21px Arial'; ctx.fillText(label,76,y);
+    ctx.fillStyle='#1a1f31'; ctx.font='700 26px Arial'; canvasText(ctx,value,430,y,565,32,'700 26px Arial');
+    ctx.strokeStyle='#eaedf2'; ctx.lineWidth=1.5; ctx.beginPath(); ctx.moveTo(76,y+30); ctx.lineTo(W-76,y+30); ctx.stroke();
+    y+=80;
+  }
+
+  // Amount block.
+  const ay=y+8;
+  ctx.fillStyle='#eef8f2'; canvasRoundRect(ctx,76,ay,W-152,158,24); ctx.fill();
+  ctx.fillStyle='#6d788d'; ctx.font='700 20px Arial'; ctx.fillText('AMOUNT PAID',106,ay+48);
+  ctx.fillStyle='#1d7f4a'; ctx.font='800 58px Arial'; ctx.fillText(money(d.paidAmount),106,ay+112);
+  ctx.fillStyle='#dcf4e5'; canvasRoundRect(ctx,W-260,ay+46,152,68,18); ctx.fill();
+  ctx.fillStyle='#168247'; ctx.font='800 22px Arial'; ctx.textAlign='center'; ctx.fillText('✓ PAID',W-184,ay+89);
+
+  ctx.textAlign='left'; ctx.fillStyle='#6d788c'; ctx.font='400 20px Arial';
+  canvasText(ctx,numberToWordsINR(d.paidAmount),76,ay+202,W-152,30,'400 20px Arial');
+
+  // Signature area.
+  const sy=ay+265;
+  ctx.strokeStyle='#8b93a3'; ctx.lineWidth=2;
+  ctx.beginPath(); ctx.moveTo(76,sy+38); ctx.lineTo(360,sy+38); ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(W-360,sy+38); ctx.lineTo(W-76,sy+38); ctx.stroke();
+  ctx.fillStyle='#2f2a72'; ctx.font='italic 28px cursive'; ctx.fillText('EZEE VISION',100,sy+28);
+  ctx.fillStyle='#778196'; ctx.font='400 17px Arial'; ctx.fillText('Authorised Signature',76,sy+69); ctx.textAlign='right'; ctx.fillText("Receiver's Signature",W-76,sy+69);
+
+  ctx.textAlign='center'; ctx.fillStyle='#8a94a7'; ctx.font='400 16px Arial'; ctx.fillText('Thank you for your timely payment.',W/2,1288);
+  ctx.font='700 16px Arial'; ctx.fillText('EZEE VISION CHAMPUA  •  FEE MANAGER',W/2,1318);
+  return new Promise((resolve,reject)=>canvas.toBlob(blob=>blob?resolve(blob):reject(new Error('Receipt image generation failed.')),'image/png',.96));
+}
+
 async function shareReceiptToWhatsApp(id){
   const f=state.fees.find(x=>x.id===id),s=state.students.find(x=>x.id===f?.studentId);
   if(!f||!s||!s.phone){toast('Student WhatsApp number is not available.');return}
   const phone=normalizedPhone(s.phone),text=receiptMessage(f,s);
+  const safeName=String(s.name||'Student').replace(/[^a-z0-9]+/gi,'-').replace(/^-|-$/g,'')||'Student';
+  const fileName=`EZEE-VISION-Fee-Receipt-${safeName}-${String(f.month||state.month).replace('-','')}.png`;
+  try{
+    toast('Preparing receipt image…');
+    const blob=await buildReceiptPosterBlob(f,s);
+    // Save the finished poster locally first so it is ready when the exact WhatsApp chat opens.
+    const url=URL.createObjectURL(blob);
+    const a=document.createElement('a'); a.href=url; a.download=fileName; document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(()=>URL.revokeObjectURL(url),3000);
+    toast(`Receipt ready. Opening ${s.name}'s WhatsApp chat…`);
+  }catch(err){toast('Receipt image could not be prepared, opening WhatsApp with the message instead.');}
   const exactChat=`whatsapp://send?phone=${phone}&text=${encodeURIComponent(text)}`;
-  try { window.location.href=exactChat; } catch(_){ window.open(`https://wa.me/${phone}?text=${encodeURIComponent(text)}`,'_blank'); }
-  setTimeout(()=>{ if(document.visibilityState==='visible') window.open(`https://wa.me/${phone}?text=${encodeURIComponent(text)}`,'_blank'); },700);
+  const webChat=`https://wa.me/${phone}?text=${encodeURIComponent(text)}`;
+  let opened=false;
+  try{window.location.href=exactChat;opened=true}catch(_){opened=false}
+  setTimeout(()=>{if(document.visibilityState==='visible'&&!document.hidden){window.open(webChat,'_blank')|| (window.location.href=webChat)}},900);
 }
 function openReceipt(id){const f=state.fees.find(x=>x.id===id),s=state.students.find(x=>x.id===f?.studentId);if(!f||!s)return;const d=receiptData(f,s);$('receiptDate').textContent=paymentDateLabel(f.paymentDate||isoToday());$('receiptBody').innerHTML=`<div class="receipt-row"><span>Receipt No.</span><strong>#${escapeHtml(d.receiptNo)}</strong></div><div class="receipt-row"><span>Student Name</span><strong>${escapeHtml(s.name)}</strong></div><div class="receipt-row"><span>Father / Guardian</span><strong>${escapeHtml(s.father||'—')}</strong></div><div class="receipt-row"><span>Class / Batch</span><strong>${escapeHtml(d.classBatch)}</strong></div><div class="receipt-row"><span>Month / Period</span><strong>${escapeHtml(d.month)}</strong></div><div class="receipt-row"><span>Payment Date</span><strong>${escapeHtml(d.paymentDate)}</strong></div><div class="receipt-row"><span>Payment Mode</span><strong>${escapeHtml(d.mode)}</strong></div><div class="receipt-row"><span>Due Date</span><strong>${escapeHtml(d.dueDate)}</strong></div><div class="receipt-row receipt-address"><span>Address</span><strong>${escapeHtml(s.address||'—')}</strong></div><div class="receipt-row receipt-words"><span>Amount in Words</span><strong>${escapeHtml(numberToWordsINR(d.paidAmount))}</strong></div>`;$('receiptAmountLabel').textContent='AMOUNT PAID';$('receiptAmount').textContent=money(d.paidAmount);$('receiptModal').dataset.feeId=id;$('receiptModal').classList.add('show')}
 function closeReceipt(){$('receiptModal').classList.remove('show')}
-function printReceipt(){const id=$('receiptModal').dataset.feeId,f=state.fees.find(x=>x.id===id),s=state.students.find(x=>x.id===f?.studentId);if(!f||!s)return;const d=receiptData(f,s);const popup=window.open('','_blank');if(!popup){toast('Please allow pop-ups to print the receipt.');return}popup.document.write(`<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>EZEE VISION Fee Receipt - ${escapeHtml(d.receiptNo)}</title><style>@page{size:A4;margin:12mm}*{box-sizing:border-box}body{font-family:Arial,sans-serif;color:#1b2030;margin:0;background:#fff}.head{padding:18px 20px 16px;background:linear-gradient(90deg,#3327b7,#604be7);color:#fff;border-radius:12px 12px 0 0;display:flex;align-items:center;justify-content:space-between;gap:14px}.logo{width:210px;height:auto;display:block;object-fit:contain}.head-copy strong{display:block;font-size:20px;margin-top:8px}.head-copy span{font-size:10px;opacity:.84}.date{font-size:11px;white-space:nowrap}.wrap{border:1px solid #e1e5ef;border-top:0;border-radius:0 0 12px 12px;padding:18px}.rows{display:grid;grid-template-columns:1fr 1fr;gap:0 18px}.row{min-height:44px;border-bottom:1px solid #eceff4;padding:9px 0;display:flex;justify-content:space-between;gap:12px}.row span{color:#7b8496;font-size:10px}.row strong{font-size:11px;text-align:right;max-width:66%}.row.wide{grid-column:1/-1}.amount{margin-top:16px;padding:14px 16px;border-radius:12px;background:#f7f8fc;border:1px solid #e0e4ec;color:#1d2235;display:flex;align-items:center;justify-content:space-between}.amount small{display:block;font-size:10px;color:#7e889a;font-weight:700;letter-spacing:.6px}.amount strong{display:block;font-size:30px;margin-top:3px;color:#28224f}.paid{border:0;border-radius:12px;width:auto;height:auto;min-width:76px;padding:10px 12px;display:grid;place-items:center;background:#e0f5e8;color:#178247;font-size:12px;font-weight:800}.words{margin-top:12px;font-size:10px;color:#687187}.sign{display:flex;justify-content:space-between;margin-top:44px;color:#7b8496;font-size:10px}.foot{margin-top:24px;padding-top:10px;border-top:1px solid #eceff4;color:#8b93a3;font-size:9px;text-align:center}</style></head><body><div class="head"><div class="head-copy"><img class="logo" src="assets/ezee-vision-logo.png" alt="EZEE VISION"><strong>FEE RECEIPT</strong><span>Official payment receipt • FEE MANAGER</span></div><div class="date">${escapeHtml(d.paymentDate)}</div></div><div class="wrap"><div class="rows"><div class="row"><span>Receipt No.</span><strong>#${escapeHtml(d.receiptNo)}</strong></div><div class="row"><span>Payment Date</span><strong>${escapeHtml(d.paymentDate)}</strong></div><div class="row"><span>Student Name</span><strong>${escapeHtml(s.name)}</strong></div><div class="row"><span>Father / Guardian</span><strong>${escapeHtml(s.father||'—')}</strong></div><div class="row"><span>Class / Batch</span><strong>${escapeHtml(d.classBatch)}</strong></div><div class="row"><span>Month / Period</span><strong>${escapeHtml(d.month)}</strong></div><div class="row"><span>Payment Mode</span><strong>${escapeHtml(d.mode)}</strong></div><div class="row"><span>Due Date</span><strong>${escapeHtml(d.dueDate)}</strong></div><div class="row wide"><span>Address</span><strong>${escapeHtml(s.address||'—')}</strong></div></div><div class="amount"><div><small>AMOUNT PAID</small><strong>${escapeHtml(money(d.paidAmount))}</strong></div><div class="paid">PAID</div></div><div class="words">Amount in words: ${escapeHtml(numberToWordsINR(d.paidAmount))}</div><div class="sign"><span>Authorised Signature</span><span>Receiver's Signature</span></div><div class="foot">Thank you for your timely payment. • Computer generated receipt.</div></div><script>window.onload=()=>window.print();</script></body></html>`);popup.document.close()}
+function printReceipt(){
+  const id=$('receiptModal').dataset.feeId;
+  const f=state.fees.find(x=>x.id===id),s=state.students.find(x=>x.id===f?.studentId);
+  if(!f||!s)return;
+  const d=receiptData(f,s);
+  const popup=window.open('','_blank');
+  if(!popup){toast('Please allow pop-ups to print the receipt.');return}
+  popup.document.write(`<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>EZEE VISION Fee Receipt - ${escapeHtml(d.receiptNo)}</title>
+  <style>
+  @page{size:A4;margin:12mm}*{box-sizing:border-box}body{font-family:Arial,sans-serif;color:#1b2030;margin:0;background:#fff}.head{padding:18px 22px 16px;background:linear-gradient(90deg,#3125b8,#654fe9);color:#fff;border-radius:16px 16px 0 0;display:flex;align-items:center;justify-content:space-between;gap:18px}.brand{display:flex;align-items:center;gap:14px}.logo{width:190px;height:54px;object-fit:contain}.head-copy strong{display:block;font-size:19px;margin-top:6px}.head-copy span{display:block;font-size:10px;opacity:.86;margin-top:3px}.date{font-size:11px;white-space:nowrap;text-align:right}.wrap{border:1px solid #e1e5ef;border-top:0;border-radius:0 0 16px 16px;padding:20px 22px}.rows{display:grid;grid-template-columns:1fr 1fr;gap:0 20px}.row{min-height:43px;border-bottom:1px solid #edf0f4;padding:10px 0;display:flex;justify-content:space-between;gap:12px}.row span{color:#7a8497;font-size:10px}.row strong{font-size:11px;text-align:right;max-width:66%}.row.wide{grid-column:1/-1}.amount{margin-top:18px;padding:15px 17px;border-radius:14px;background:#eef8f2;border:1px solid #d8eee1;display:flex;align-items:center;justify-content:space-between}.amount small{display:block;font-size:10px;color:#6f7a8d;font-weight:700;letter-spacing:.7px}.amount strong{display:block;font-size:32px;margin-top:3px;color:#178247}.paid{border:0;border-radius:12px;min-width:82px;padding:11px 13px;background:#dcf4e5;color:#178247;font-size:12px;font-weight:800;text-align:center}.words{margin-top:13px;font-size:10px;color:#687187}.sign{display:grid;grid-template-columns:1fr 1fr;gap:70px;margin-top:45px;color:#778196;font-size:10px}.sign-block{display:flex;flex-direction:column;gap:7px}.sig{height:28px;color:#2f2a72;font:italic 25px cursive}.line{height:28px;border-bottom:1px solid #8b93a3}.foot{margin-top:24px;padding-top:11px;border-top:1px solid #eceff4;color:#8891a2;font-size:9px;text-align:center}.foot strong{display:block;color:#687286;margin-bottom:3px}
+  </style></head><body><div class="head"><div class="brand"><img class="logo" src="assets/ezee-vision-logo.png" alt="EZEE VISION"><div class="head-copy"><strong>FEE RECEIPT</strong><span>Official payment receipt • FEE MANAGER</span></div></div><div class="date">${escapeHtml(d.paymentDate)}<br><small>${escapeHtml(d.receiptNo)}</small></div></div><div class="wrap"><div class="rows"><div class="row"><span>Receipt No.</span><strong>#${escapeHtml(d.receiptNo)}</strong></div><div class="row"><span>Payment Date</span><strong>${escapeHtml(d.paymentDate)}</strong></div><div class="row"><span>Student Name</span><strong>${escapeHtml(s.name)}</strong></div><div class="row"><span>Father / Guardian</span><strong>${escapeHtml(s.father||'—')}</strong></div><div class="row"><span>Class / Batch</span><strong>${escapeHtml(d.classBatch)}</strong></div><div class="row"><span>Month / Period</span><strong>${escapeHtml(d.month)}</strong></div><div class="row"><span>Due Date</span><strong>${escapeHtml(d.dueDate||'—')}</strong></div><div class="row"><span>Payment Mode</span><strong>${escapeHtml(d.mode)}</strong></div><div class="row wide"><span>Address</span><strong>${escapeHtml(s.address||'—')}</strong></div></div><div class="amount"><div><small>AMOUNT PAID</small><strong>${escapeHtml(money(d.paidAmount))}</strong></div><div class="paid">✓ PAID</div></div><div class="words">Amount in words: ${escapeHtml(numberToWordsINR(d.paidAmount))}</div><div class="sign"><div class="sign-block"><div class="sig">EZEE VISION</div><div>Authorised Signature</div></div><div class="sign-block"><div class="line"></div><div>Receiver's Signature</div></div></div><div class="foot"><strong>EZEE VISION CHAMPUA • FEE MANAGER</strong>Thank you for your timely payment. This is a computer-generated receipt.</div></div><script>window.onload=()=>window.print();</script></body></html>`);
+  popup.document.close();
+}
 function sendReceiptWhatsApp(){const id=$('receiptModal').dataset.feeId;return shareReceiptToWhatsApp(id)}
 function openMonthPicker(){if(!$('monthPicker'))return;$('monthPicker').value=state.month;if(typeof $('monthPicker').showPicker==='function')$('monthPicker').showPicker();else $('monthPicker').click()}
 function setMonth(value){if(!/^\d{4}-\d{2}$/.test(value))return;state.month=value;state.attendanceReportMonth=value;render();toast(`Showing ${monthName(value)}.`)}

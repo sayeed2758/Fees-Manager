@@ -473,3 +473,83 @@ body{min-height:100dvh}
 .receipt-amount{background:#f7f8fc;border:1px solid #e0e4ec;color:#1d2235;box-shadow:none}.receipt-amount small{display:block;color:#7e889a;font-weight:750;letter-spacing:.8px;opacity:1}.receipt-amount strong{display:block;color:#28224f;font-size:32px;margin-top:4px}.receipt-amount-caption{display:block;margin-top:4px;font-size:9px;color:#8a94a7}.receipt-paid-badge{width:auto!important;height:auto!important;min-width:78px;padding:10px 12px;border:0!important;border-radius:12px!important;background:#e0f5e8;color:#178247;font-size:11px;display:inline-flex!important;align-items:center;justify-content:center;box-shadow:inset 0 1px 0 rgba(255,255,255,.8),0 4px 9px rgba(23,130,71,.10)}.receipt-row strong{color:#1d2235}
 html{scroll-behavior:auto}body{touch-action:pan-y}.main-content,#page-attendance,#page-expenses,.catalog-list,.modal-sheet,.receipt{overscroll-behavior:contain}
 @media(max-width:480px){.main-content{padding-top:82px;padding-left:14px;padding-right:14px;padding-bottom:122px}#page-attendance,#page-expenses{padding-top:82px;padding-left:14px;padding-right:14px}.topbar{height:64px}.profile-menu{top:70px;right:10px;width:180px;border-radius:14px}.compact-sheet,.app-info-sheet{padding-left:12px;padding-right:12px}.catalog-row{min-height:46px;padding-left:10px}.catalog-row span{font-size:13px}.catalog-row .outline-btn.mini{min-height:32px;font-size:9px;padding:5px 9px}.receipt-amount strong{font-size:29px}}
+
+/* Phase 12 FINAL — modal layers, reliable touch scrolling, and premium receipt */
+html,body{width:100%;max-width:100%;overflow-x:hidden}
+body:has(.modal-layer.show),body:has(.confirm-layer.show){overflow:hidden}
+.modal-layer{z-index:200;touch-action:pan-y;background:rgba(18,22,38,.50);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px)}
+.confirm-layer{z-index:220}
+.overlay{z-index:160}
+.drawer{z-index:170}
+.profile-menu{z-index:180}
+.topbar{z-index:100}
+.bottom-nav{z-index:110}
+.modal-layer.show{pointer-events:auto}
+.modal-sheet,.receipt{position:relative;max-height:calc(100dvh - 16px);overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;overscroll-behavior:contain;touch-action:pan-y;padding-bottom:max(22px,env(safe-area-inset-bottom))}
+.modal-sheet>*{max-width:100%}
+.modal-top{flex:0 0 auto}
+.compact-sheet{max-height:calc(100dvh - 16px);padding-bottom:max(18px,env(safe-area-inset-bottom))}
+.compact-sheet .modal-top{position:sticky;top:0;z-index:10;box-shadow:0 1px 0 rgba(227,231,239,.85)}
+.app-info-sheet{max-height:calc(100dvh - 16px)}
+.app-info-sheet .modal-top{position:sticky;top:0;z-index:10}
+.profile-sheet{max-height:calc(100dvh - 16px)}
+.profile-sheet .modal-top{position:sticky;top:0;z-index:10}
+.idcard-modal-sheet,.report-modal-sheet{max-height:calc(100dvh - 16px);overflow-y:auto;-webkit-overflow-scrolling:touch;touch-action:pan-y}
+
+/* Make every sheet feel like one coherent app surface rather than a webpage dialog. */
+.modal-layer .close-btn{flex:0 0 auto;line-height:1;cursor:pointer}
+.modal-layer .form-section{box-shadow:0 5px 18px rgba(34,40,70,.04)}
+.modal-layer input,.modal-layer select,.modal-layer textarea{font-size:16px}
+
+/* FINAL receipt */
+.receipt-layer{align-items:center;padding:8px}
+.receipt{width:min(560px,100%);max-height:calc(100dvh - 16px);background:#fff;border:1px solid #e2e6ef;border-radius:24px;box-shadow:0 24px 70px rgba(14,18,39,.26);padding-bottom:0}
+.receipt-top{min-height:112px;padding:14px 18px;background:linear-gradient(120deg,#2d22ae 0%,#4735d3 52%,#654fe8 100%);position:sticky;top:0;z-index:6}
+.receipt-brand-wrap{gap:12px;align-items:center}
+.receipt-brand-logo{width:145px;height:56px}
+.receipt-head-copy strong{font-size:20px;letter-spacing:.2px}
+.receipt-head-copy span{font-size:10px;margin-top:4px}
+.receipt-top>span{font-size:11px;font-weight:700}
+.receipt-body{padding:16px 18px 4px;display:grid;grid-template-columns:1fr 1fr;gap:0 18px;background:#fff}
+.receipt-row{min-height:42px;padding:8px 0;border-bottom:1px solid #edf0f4;display:flex;justify-content:space-between;align-items:flex-start;gap:10px}
+.receipt-row span:first-child{font-size:11px;color:#7c8799;line-height:1.3}
+.receipt-row strong{font-size:12px;line-height:1.35;color:#1a1f30;text-align:right;max-width:68%;word-break:break-word}
+.receipt-row.receipt-address,.receipt-row.receipt-words{grid-column:1/-1}
+.receipt-amount{margin:12px 18px 8px;padding:14px 16px;border:1px solid #d5ecdf;background:linear-gradient(145deg,#f0fbf4,#e8f7ee);border-radius:17px;color:#182234;box-shadow:inset 0 1px 0 rgba(255,255,255,.9),0 6px 16px rgba(28,125,74,.06)}
+.receipt-amount small{font-size:10px;color:#738096;letter-spacing:.9px;font-weight:800}
+.receipt-amount strong{font-size:34px;color:#168247;line-height:1.04}
+.receipt-amount-caption{font-size:9px;color:#7c8b9d;margin-top:3px}
+.receipt-paid-badge{min-width:82px!important;padding:11px 12px!important;border-radius:13px!important;background:#d9f3e3!important;color:#178247!important;font-size:11px!important;font-weight:850!important;box-shadow:inset 0 1px 0 rgba(255,255,255,.95),0 5px 11px rgba(23,130,71,.10)!important}
+.receipt-signatures{display:grid;grid-template-columns:1fr 1fr;gap:20px;padding:26px 18px 6px}
+.signature-block{min-height:58px;display:flex;flex-direction:column;justify-content:flex-end;gap:6px;color:#7b879a;font-size:9px}
+.signature-script{display:block;height:28px;color:#2d286b;font-family:"Brush Script MT","Segoe Script",cursive;font-size:23px;line-height:28px;transform:rotate(-3deg);transform-origin:left center}
+.signature-line{display:block;height:28px;border-bottom:1px solid #8b93a3}
+.receipt-note{display:flex;flex-direction:column;gap:2px;padding:8px 18px 12px;text-align:center;color:#8a94a7;font-size:8px;border-top:1px solid #eef1f4}
+.receipt-note strong{font-size:9px;color:#657186;letter-spacing:.25px}
+.receipt-actions{position:sticky;bottom:0;z-index:7;grid-template-columns:1fr 1.2fr 1fr;gap:7px;padding:9px 12px max(10px,env(safe-area-inset-bottom));background:rgba(255,255,255,.98);border-top:1px solid #eceff4;box-shadow:0 -5px 14px rgba(25,31,54,.05)}
+.receipt-actions button{min-height:43px;border-radius:13px;font-size:11px;font-weight:800}
+.receipt-actions .small-primary{background:linear-gradient(135deg,#4a3bdd,#382ccb);box-shadow:0 6px 14px rgba(60,47,207,.18)}
+.receipt-actions .outline-btn{background:#f8f9fc}
+
+@media(max-width:480px){
+  .receipt-layer{padding:5px}
+  .receipt{width:100%;max-height:calc(100dvh - 10px);border-radius:22px}
+  .receipt-top{min-height:92px;padding:10px 12px}
+  .receipt-brand-wrap{gap:8px}
+  .receipt-brand-logo{width:112px;height:44px}
+  .receipt-head-copy strong{font-size:15px}
+  .receipt-head-copy span{font-size:8px}
+  .receipt-top>span{font-size:9px}
+  .receipt-body{padding:10px 12px 2px;grid-template-columns:1fr;gap:0}
+  .receipt-row{min-height:36px;padding:7px 0}
+  .receipt-row span:first-child{font-size:10px}
+  .receipt-row strong{font-size:11px;max-width:64%}
+  .receipt-row.receipt-address,.receipt-row.receipt-words{grid-column:auto}
+  .receipt-amount{margin:8px 12px 5px;padding:12px 13px;border-radius:15px}
+  .receipt-amount strong{font-size:29px}
+  .receipt-paid-badge{min-width:72px!important;padding:9px 10px!important}
+  .receipt-signatures{padding:18px 12px 5px;gap:12px}
+  .signature-script{font-size:20px}
+  .receipt-note{padding:7px 12px 10px}
+  .receipt-actions{padding-left:9px;padding-right:9px}
+}
