@@ -3,22 +3,22 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <meta name="theme-color" content="#3f2bda" />
-  <meta name="description" content="MMT Coaching Fees Manager" />
-  <title>MMT Fees Manager</title>
+  <meta name="theme-color" content="#4739d5" />
+  <meta name="description" content="FEE MANAGER — EZEE VISION CHAMPUA" />
+  <title>FEE MANAGER</title>
   <link rel="stylesheet" href="assets/style.css" />
 </head>
 <body>
   <div id="authScreen" class="auth-screen">
     <div class="auth-card">
-      <div class="auth-logo"><span>📚</span><strong>MMT</strong></div>
+      <div class="auth-logo"><img src="assets/ezee-vision-logo.png" alt="EZEE VISION" /><strong>FEE MANAGER</strong></div>
       <div id="authSetup" class="setup-box" hidden>
         <h1>Firebase Setup Required</h1>
         <p>This Phase 2 build is cloud-ready, but your Firebase project has not been connected yet.</p>
         <p>Open <code>.env.local</code> and fill in the Firebase Web App values, then restart the development server.</p>
       </div>
       <form id="authForm">
-        <div class="auth-heading"><h1 id="authTitle">Welcome back</h1><p id="authSubtitle">Sign in to your coaching fees manager</p></div>
+        <div class="auth-heading"><h1 id="authTitle">Welcome back</h1><p id="authSubtitle">Sign in to FEE MANAGER</p></div>
         <input id="authName" placeholder="Coach / Institute Name" autocomplete="name" hidden />
         <input id="authEmail" type="email" placeholder="Email address" autocomplete="email" required />
         <input id="authPassword" type="password" placeholder="Password" autocomplete="current-password" minlength="6" required />
@@ -32,7 +32,7 @@
   <div id="app" class="app-shell" hidden>
     <header class="topbar">
       <button class="icon-btn" id="menuBtn" aria-label="Open menu">☰</button>
-      <div class="brand" aria-label="MMT"><div class="brand-mark">📚</div><div class="brand-text"><strong>MMT</strong><span>Fees Manager</span></div></div>
+      <div class="brand" aria-label="FEE MANAGER"><img class="brand-logo" src="assets/ezee-vision-logo.png" alt="EZEE VISION" /></div>
       <button class="avatar-btn" id="profileBtn">A</button>
     </header>
 
@@ -87,7 +87,7 @@
     <nav class="bottom-nav"><button data-nav="home" class="nav-item active"><span>⌂</span><small>Home</small></button><button data-nav="students" class="nav-item"><span>👥</span><small>Students</small></button><button data-nav="payments" class="nav-item"><span>▣</span><small>Payments</small></button><button data-nav="reports" class="nav-item"><span>▥</span><small>Reports</small></button></nav>
 
     <div class="overlay" id="overlay"></div>
-    <aside class="drawer" id="drawer"><div class="drawer-head"><div class="big-avatar" id="drawerAvatar">A</div><h2 id="drawerName">MMT</h2><div id="drawerInstitute">Fees Manager</div><span id="drawerEmail"></span></div><div class="drawer-body">
+    <aside class="drawer" id="drawer"><div class="drawer-head"><div class="big-avatar" id="drawerAvatar">A</div><h2 id="drawerName">FEE MANAGER</h2><div id="drawerInstitute">EZEE VISION CHAMPUA</div><span id="drawerEmail"></span></div><div class="drawer-body">
       <button data-nav="home" class="drawer-item selected"><span>▦</span>Dashboard</button><button data-nav="students" class="drawer-item"><span>👥</span>Students</button><button data-nav="payments" class="drawer-item"><span>▣</span>Fees</button><button class="drawer-item" data-action="subscription"><span>★</span>Subscription</button><div class="drawer-divider"></div><button class="drawer-item" data-action="classes"><span>🎓</span>Classes</button><button class="drawer-item" data-action="batches"><span>◷</span>Batches</button><button class="drawer-item" data-action="subjects"><span>▣</span>Subjects</button><button class="drawer-item" data-action="fee-settings"><span>⚙</span>Fee Settings</button><button class="drawer-item" data-nav="attendance"><span>✓</span>Attendance Pro</button><button class="drawer-item" data-action="attendance-report"><span>▥</span>Attendance Reports</button><button class="drawer-item" data-nav="expenses"><span>₹</span>Expenses</button><div class="drawer-divider"></div><button class="drawer-item" data-action="rate"><span>★</span>Rate App</button><button class="drawer-item" data-action="about"><span>ⓘ</span>About Us</button><button class="drawer-item" data-action="privacy"><span>⬟</span>Privacy Policy</button><button class="drawer-item" data-action="terms"><span>▤</span>Terms & Conditions</button>
     </div></aside>
 
@@ -107,7 +107,7 @@
 
     <div class="modal-layer" id="profileModal"><div class="modal-sheet profile-sheet"><div class="modal-top"><button class="close-btn" id="profileCloseBtn">×</button><div><h2>Student Profile</h2><small>Complete student overview</small></div></div><div class="profile-hero"><div class="student-avatar profile-avatar" id="profileAvatar">S</div><div><h2 id="profileStudentName">Student</h2><p id="profileStudentMeta">Class • Batch</p></div></div><div id="profileBody"></div><div class="profile-actions"><button class="outline-btn" id="profileWaBtn" type="button">WHATSAPP</button><button class="outline-btn" id="profileEditBtn" type="button">EDIT</button><button class="small-primary" id="profileIdBtn" type="button">ID CARD</button></div></div></div>
 
-<div class="modal-layer" id="idCardModal"><div class="idcard-modal-sheet"><div class="modal-top"><button class="close-btn" id="idCardCloseBtn">×</button><div><h2>Student ID Card</h2><small>Printable identity card</small></div></div><div class="id-card-preview"><div class="id-card-head"><strong id="idCardInstitute">EZEE VISION</strong><span>STUDENT IDENTITY CARD</span></div><div class="id-card-body"><div class="id-card-profile"><div class="student-avatar id-card-avatar" id="idCardAvatar">S</div><div><h2 id="idCardName">Student</h2><p id="idCardClass">Class —</p><p id="idCardBatch">Batch —</p></div></div><div class="id-card-grid"><div><small>PHONE</small><strong id="idCardPhone">—</strong></div><div><small>ADMISSION</small><strong id="idCardAdmission">—</strong></div><div class="wide"><small>SUBJECTS</small><strong id="idCardSubjects">—</strong></div></div></div><div class="id-card-foot"><span>Keep this card with you</span><span>MMT Fees Manager</span></div></div><button class="small-primary large-action" id="idCardPrintBtn" type="button">PRINT ID CARD</button></div></div>
+<div class="modal-layer" id="idCardModal"><div class="idcard-modal-sheet"><div class="modal-top"><button class="close-btn" id="idCardCloseBtn">×</button><div><h2>Student ID Card</h2><small>Printable identity card</small></div></div><div class="id-card-preview"><div class="id-card-head"><strong id="idCardInstitute">EZEE VISION</strong><span>STUDENT IDENTITY CARD</span></div><div class="id-card-body"><div class="id-card-profile"><div class="student-avatar id-card-avatar" id="idCardAvatar">S</div><div><h2 id="idCardName">Student</h2><p id="idCardClass">Class —</p><p id="idCardBatch">Batch —</p></div></div><div class="id-card-grid"><div><small>PHONE</small><strong id="idCardPhone">—</strong></div><div><small>ADMISSION</small><strong id="idCardAdmission">—</strong></div><div class="wide"><small>SUBJECTS</small><strong id="idCardSubjects">—</strong></div></div></div><div class="id-card-foot"><span>Keep this card with you</span><span>FEE MANAGER</span></div></div><button class="small-primary large-action" id="idCardPrintBtn" type="button">PRINT ID CARD</button></div></div>
 
 <div class="modal-layer" id="attendanceReportModal"><div class="modal-sheet report-modal-sheet"><div class="modal-top"><button class="close-btn" id="attendanceReportCloseBtn">×</button><div><h2>Attendance Report</h2><small>Monthly student attendance summary</small></div></div><div class="report-filter-panel"><div class="report-field"><span>Month</span><input id="attendanceReportMonth" type="month"></div><div class="report-field"><span>Class</span><select id="attendanceReportClass"><option>All</option></select></div><div class="report-field"><span>Batch</span><select id="attendanceReportBatch"><option>All</option></select></div></div><div class="two-mini-grid attendance-summary"><div class="mini-card"><strong id="attendanceReportPresent">0</strong><span>Present</span></div><div class="mini-card"><strong id="attendanceReportAbsent">0</strong><span>Absent</span></div><div class="mini-card"><strong id="attendanceReportRate">0%</strong><span>Rate</span></div></div><div class="report-card"><div class="section-title-row"><h2>Student Summary</h2><span class="count-badge" id="attendanceReportCount">0</span></div><div id="attendanceReportList"></div></div><div class="report-actions"><button class="outline-btn" id="attendanceReportExportBtn">⬇ Export CSV</button><button class="small-primary" id="attendanceReportPrintBtn">🖨 Print</button></div></div></div>
 
