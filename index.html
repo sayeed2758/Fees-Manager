@@ -2,138 +2,84 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <meta name="theme-color" content="#3f2bda" />
-  <meta name="description" content="MMT Coaching Fees Manager - Phase 1" />
+  <meta name="description" content="MMT Coaching Fees Manager" />
   <title>MMT Fees Manager</title>
   <link rel="stylesheet" href="assets/style.css" />
 </head>
 <body>
-  <div id="app" class="app-shell">
+  <div id="authScreen" class="auth-screen">
+    <div class="auth-card">
+      <div class="auth-logo"><span>📚</span><strong>MMT</strong></div>
+      <div id="authSetup" class="setup-box" hidden>
+        <h1>Firebase Setup Required</h1>
+        <p>This Phase 2 build is cloud-ready, but your Firebase project has not been connected yet.</p>
+        <p>Open <code>.env.local</code> and fill in the Firebase Web App values, then restart the development server.</p>
+      </div>
+      <form id="authForm">
+        <div class="auth-heading"><h1 id="authTitle">Welcome back</h1><p id="authSubtitle">Sign in to your coaching fees manager</p></div>
+        <input id="authName" placeholder="Coach / Institute Name" autocomplete="name" hidden />
+        <input id="authEmail" type="email" placeholder="Email address" autocomplete="email" required />
+        <input id="authPassword" type="password" placeholder="Password" autocomplete="current-password" minlength="6" required />
+        <button class="primary-btn large" type="submit" id="authSubmit">SIGN IN</button>
+        <button type="button" class="auth-switch" id="authSwitch">Create a new account</button>
+        <p class="auth-status" id="authStatus"></p>
+      </form>
+    </div>
+  </div>
+
+  <div id="app" class="app-shell" hidden>
     <header class="topbar">
       <button class="icon-btn" id="menuBtn" aria-label="Open menu">☰</button>
-      <div class="brand" aria-label="MMT">
-        <div class="brand-mark">📚</div>
-        <div class="brand-text"><strong>MMT</strong><span>Fees Manager</span></div>
-      </div>
+      <div class="brand" aria-label="MMT"><div class="brand-mark">📚</div><div class="brand-text"><strong>MMT</strong><span>Fees Manager</span></div></div>
       <button class="avatar-btn" id="profileBtn">A</button>
     </header>
 
     <main class="main-content">
-      <!-- HOME -->
       <section class="page active" id="page-home">
-        <div class="page-head">
-          <div>
-            <h1>Welcome back!</h1>
-            <p>Here's your tuition overview</p>
-          </div>
-          <button class="month-pill" id="monthBtn">🗓 <span id="currentMonthLabel">Oct 2026</span> ▾</button>
-        </div>
-
-        <div class="trial-card">
-          <div class="trial-icon">⌛</div>
-          <div class="trial-copy"><strong>Free Trial Active</strong><span>6 days remaining in your trial</span></div>
-          <button class="light-btn" id="subscribeBtn">Subscribe</button>
-        </div>
-
-        <div class="stats-grid">
-          <div class="stat-card stat-blue"><div class="stat-icon">👥</div><div class="stat-label">STUDENTS</div><div class="stat-value" id="dashStudents">0</div><div class="stat-sub">Total Students</div></div>
-          <div class="stat-card stat-green"><div class="stat-icon">✓</div><div class="stat-label">COLLECTED</div><div class="stat-value" id="dashCollected">₹0</div><div class="stat-sub">This Month</div></div>
-          <div class="stat-card stat-yellow"><div class="stat-icon">⌛</div><div class="stat-label">PENDING</div><div class="stat-value" id="dashPending">₹0</div><div class="stat-sub">Yet to be Paid</div></div>
-          <div class="stat-card stat-red"><div class="stat-icon">◉</div><div class="stat-label">DUE</div><div class="stat-value" id="dashDue">₹0</div><div class="stat-sub">Overdue Amount</div></div>
-        </div>
-
+        <div class="page-head"><div><h1>Welcome back!</h1><p>Here's your tuition overview</p></div><button class="month-pill" id="monthBtn">🗓 <span id="currentMonthLabel">Oct 2026</span> ▾</button></div>
+        <div class="trial-card"><div class="trial-icon">⌛</div><div class="trial-copy"><strong>Free Trial Active</strong><span id="trialText">Cloud account connected</span></div><button class="light-btn" id="subscribeBtn">Subscribe</button></div>
+        <div class="stats-grid"><div class="stat-card stat-blue"><div class="stat-icon">👥</div><div class="stat-label">STUDENTS</div><div class="stat-value" id="dashStudents">0</div><div class="stat-sub">Total Students</div></div><div class="stat-card stat-green"><div class="stat-icon">✓</div><div class="stat-label">COLLECTED</div><div class="stat-value" id="dashCollected">₹0</div><div class="stat-sub">This Month</div></div><div class="stat-card stat-yellow"><div class="stat-icon">⌛</div><div class="stat-label">PENDING</div><div class="stat-value" id="dashPending">₹0</div><div class="stat-sub">Yet to be Paid</div></div><div class="stat-card stat-red"><div class="stat-icon">◉</div><div class="stat-label">DUE</div><div class="stat-value" id="dashDue">₹0</div><div class="stat-sub">Overdue Amount</div></div></div>
         <div class="section-title-row"><h2>Recent Students</h2><button class="text-btn" data-nav="students">View All</button></div>
         <div id="recentStudents" class="list-card empty">No recent students</div>
-
         <button class="primary-btn large" id="generateFeesBtn">▣ &nbsp; GENERATE MONTHLY FEES</button>
       </section>
 
-      <!-- STUDENTS -->
       <section class="page" id="page-students">
         <div class="page-title-row"><h1>Students</h1><button class="round-add" id="addStudentBtn">+</button></div>
         <input id="studentSearch" class="search-input" placeholder="Search students..." autocomplete="off" />
         <div id="studentsList" class="cards-list"></div>
       </section>
 
-      <!-- PAYMENTS -->
       <section class="page" id="page-payments">
-        <div class="blue-banner">
-          <div><h1>Fee Records</h1><span id="paymentMonthLabel">Oct 2026</span></div>
-          <div class="banner-chips"><span class="chip paid" id="paidCountChip">✓ 0 Paid</span><span class="chip pending" id="pendingCountChip">! 0 Pending</span></div>
-        </div>
-        <div class="filter-row">
-          <select id="statusFilter"><option>All</option><option>Paid</option><option>Pending</option></select>
-          <select id="classFilter"><option>All</option></select>
-          <select id="batchFilter"><option>All</option></select>
-        </div>
+        <div class="blue-banner"><div><h1>Fee Records</h1><span id="paymentMonthLabel">Oct 2026</span></div><div class="banner-chips"><span class="chip paid" id="paidCountChip">✓ 0 Paid</span><span class="chip pending" id="pendingCountChip">! 0 Pending</span></div></div>
+        <div class="filter-row"><select id="statusFilter"><option>All</option><option>Paid</option><option>Pending</option></select><select id="classFilter"><option>All</option></select><select id="batchFilter"><option>All</option></select></div>
         <div id="paymentsList" class="cards-list"></div>
       </section>
 
-      <!-- REPORTS -->
       <section class="page" id="page-reports">
         <div class="page-title-row"><div><h1>Reports</h1><p id="reportMonthLabel">Oct 2026</p></div><button class="month-pill" id="reportMonthBtn">Oct 2026 ▾</button></div>
-        <div class="report-card">
-          <h2>Monthly Overview</h2>
-          <div class="report-line"><span><i class="dot blue"></i>Total Fee</span><strong id="reportTotal">₹0</strong></div>
-          <div class="report-line"><span><i class="dot green"></i>Collected</span><strong id="reportCollected">₹0</strong></div>
-          <div class="report-line"><span><i class="dot red"></i>Pending</span><strong id="reportPending">₹0</strong></div>
-          <hr/>
-          <div class="collection-row"><span>Collection Rate</span><strong id="reportRate">0%</strong></div>
-          <div class="progress"><span id="rateBar"></span></div>
-        </div>
+        <div class="report-card"><h2>Monthly Overview</h2><div class="report-line"><span><i class="dot blue"></i>Total Fee</span><strong id="reportTotal">₹0</strong></div><div class="report-line"><span><i class="dot green"></i>Collected</span><strong id="reportCollected">₹0</strong></div><div class="report-line"><span><i class="dot red"></i>Pending</span><strong id="reportPending">₹0</strong></div><hr/><div class="collection-row"><span>Collection Rate</span><strong id="reportRate">0%</strong></div><div class="progress"><span id="rateBar"></span></div></div>
         <div class="two-mini-grid"><div class="mini-card"><strong id="reportStudentCount">0</strong><span>Total Students</span></div><div class="mini-card"><strong id="reportActiveCount">0</strong><span>Active Students</span></div></div>
         <div class="report-card"><div class="section-title-row"><h2>Pending Fees</h2><span class="count-badge" id="reportPendingCount">0</span></div><div id="pendingReportList"></div></div>
       </section>
     </main>
 
-    <nav class="bottom-nav">
-      <button data-nav="home" class="nav-item active"><span>⌂</span><small>Home</small></button>
-      <button data-nav="students" class="nav-item"><span>👥</span><small>Students</small></button>
-      <button data-nav="payments" class="nav-item"><span>▣</span><small>Payments</small></button>
-      <button data-nav="reports" class="nav-item"><span>▥</span><small>Reports</small></button>
-    </nav>
+    <nav class="bottom-nav"><button data-nav="home" class="nav-item active"><span>⌂</span><small>Home</small></button><button data-nav="students" class="nav-item"><span>👥</span><small>Students</small></button><button data-nav="payments" class="nav-item"><span>▣</span><small>Payments</small></button><button data-nav="reports" class="nav-item"><span>▥</span><small>Reports</small></button></nav>
 
-    <!-- drawer -->
     <div class="overlay" id="overlay"></div>
-    <aside class="drawer" id="drawer">
-      <div class="drawer-head"><div class="big-avatar">A</div><h2>Abdur Rahman</h2><div>EZEE VISION</div><span>intelligenceai007@gmail.com</span></div>
-      <div class="drawer-body">
-        <button data-nav="home" class="drawer-item selected"><span>▦</span>Dashboard</button>
-        <button data-nav="students" class="drawer-item"><span>👥</span>Students</button>
-        <button data-nav="payments" class="drawer-item"><span>▣</span>Fees</button>
-        <button class="drawer-item" data-action="subscription"><span>★</span>Subscription</button>
-        <div class="drawer-divider"></div>
-        <button class="drawer-item" data-action="classes"><span>🎓</span>Classes</button>
-        <button class="drawer-item" data-action="batches"><span>◷</span>Batches</button>
-        <button class="drawer-item" data-action="subjects"><span>▣</span>Subjects</button>
-        <div class="drawer-divider"></div>
-        <button class="drawer-item" data-action="rate"><span>★</span>Rate App</button>
-        <button class="drawer-item" data-action="about"><span>ⓘ</span>About Us</button>
-        <button class="drawer-item" data-action="privacy"><span>⬟</span>Privacy Policy</button>
-        <button class="drawer-item" data-action="terms"><span>▤</span>Terms & Conditions</button>
-      </div>
-    </aside>
+    <aside class="drawer" id="drawer"><div class="drawer-head"><div class="big-avatar" id="drawerAvatar">A</div><h2 id="drawerName">MMT</h2><div id="drawerInstitute">Fees Manager</div><span id="drawerEmail"></span></div><div class="drawer-body">
+      <button data-nav="home" class="drawer-item selected"><span>▦</span>Dashboard</button><button data-nav="students" class="drawer-item"><span>👥</span>Students</button><button data-nav="payments" class="drawer-item"><span>▣</span>Fees</button><button class="drawer-item" data-action="subscription"><span>★</span>Subscription</button><div class="drawer-divider"></div><button class="drawer-item" data-action="classes"><span>🎓</span>Classes</button><button class="drawer-item" data-action="batches"><span>◷</span>Batches</button><button class="drawer-item" data-action="subjects"><span>▣</span>Subjects</button><div class="drawer-divider"></div><button class="drawer-item" data-action="rate"><span>★</span>Rate App</button><button class="drawer-item" data-action="about"><span>ⓘ</span>About Us</button><button class="drawer-item" data-action="privacy"><span>⬟</span>Privacy Policy</button><button class="drawer-item" data-action="terms"><span>▤</span>Terms & Conditions</button>
+    </div></aside>
 
-    <!-- profile menu -->
     <div class="profile-menu" id="profileMenu"><button data-action="profile">My Profile</button><button data-action="logout">Logout</button></div>
 
-    <!-- add student modal -->
-    <div class="modal-layer" id="studentModal">
-      <div class="modal-sheet">
-        <div class="modal-top"><button class="close-btn" id="closeStudent">×</button><h2>Add Student</h2></div>
-        <form id="studentForm">
-          <div class="form-section"><h3>Student Info</h3><input required id="sName" placeholder="Student Name *"/><input id="sFather" placeholder="Father / Guardian Name"/><input id="sPhone" placeholder="Phone Number" inputmode="tel"/><textarea id="sAddress" placeholder="Address"></textarea></div>
-          <div class="form-section"><h3>Academic Info</h3><select id="sClass"><option value="">Class (tap to select)</option><option>Class 6</option><option>Class 7</option><option>Class 8</option><option>Class 9</option><option>Class 10</option></select><select id="sBatch"><option value="">Batch (tap to select)</option><option>Morning</option><option>Evening</option><option>Weekend</option><option>Special Batch</option></select><select id="sSubject" multiple><option>English</option><option>Math</option><option>Science</option><option>SST</option></select><label class="date-field">Admission Date<input type="date" id="sDate" /></label></div>
-          <div class="form-section"><h3>Fee / Discount</h3><input id="sFee" type="number" min="0" step="50" placeholder="Monthly Fee (₹)" value="1500"/><input id="sDiscount" type="number" min="0" step="50" placeholder="Discount Amount (₹)" value="0"/><input id="sDiscountReason" placeholder="Discount Reason"/></div>
-          <button class="primary-btn large" type="submit">SAVE STUDENT</button>
-        </form>
-      </div>
-    </div>
+    <div class="modal-layer" id="studentModal"><div class="modal-sheet"><div class="modal-top"><button class="close-btn" id="closeStudent">×</button><h2 id="studentModalTitle">Add Student</h2></div><form id="studentForm"><div class="form-section"><h3>Student Info</h3><input required id="sName" placeholder="Student Name *"/><input id="sFather" placeholder="Father / Guardian Name"/><input id="sPhone" placeholder="Phone Number" inputmode="tel"/><textarea id="sAddress" placeholder="Address"></textarea></div><div class="form-section"><h3>Academic Info</h3><select id="sClass"><option value="">Class (tap to select)</option><option>Class 6</option><option>Class 7</option><option>Class 8</option><option>Class 9</option><option>Class 10</option></select><select id="sBatch"><option value="">Batch (tap to select)</option><option>Morning</option><option>Evening</option><option>Weekend</option><option>Special Batch</option></select><select id="sSubject" multiple><option>English</option><option>Math</option><option>Science</option><option>SST</option></select><label class="date-field">Admission Date<input type="date" id="sDate" /></label></div><div class="form-section"><h3>Fee / Discount</h3><input id="sFee" type="number" min="0" step="50" placeholder="Monthly Fee (₹)" value="1500"/><input id="sDiscount" type="number" min="0" step="50" placeholder="Discount Amount (₹)" value="0"/><input id="sDiscountReason" placeholder="Discount Reason"/></div><button class="primary-btn large" type="submit" id="saveStudentBtn">SAVE STUDENT</button><button type="button" class="danger-btn" id="deleteStudentBtn" hidden>DELETE STUDENT</button></form></div></div>
 
-    <!-- receipt modal -->
     <div class="modal-layer" id="receiptModal"><div class="receipt"><div class="receipt-top"><div><strong>EZEE VISION</strong><span>OFFICIAL PAYMENT RECEIPT</span></div><span id="receiptDate">02 Oct 2026</span></div><div class="receipt-body" id="receiptBody"></div><div class="receipt-amount"><div><small>AMOUNT PAID</small><strong id="receiptAmount">₹0</strong></div><b>PAID</b></div><div class="receipt-foot">Authorised Signature <span>Receiver's Signature</span></div></div></div>
   </div>
-  <script src="assets/app.js"></script>
+  <div id="toast" class="toast"></div>
+  <script type="module" src="assets/app.js"></script>
 </body>
 </html>
