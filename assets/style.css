@@ -440,3 +440,36 @@ button,.nav-item,.chip,.stat-card,.trial-card,.analytics-card,.recent-row,.payme
   .receipt-note{padding:0 12px 8px;font-size:8px}
   .receipt-actions{grid-template-columns:1fr 1.2fr 1fr;padding:7px 9px 9px}
 }
+
+
+/* Phase 11 — app-shell refinement, catalog sheets, info pages, receipt and profile */
+html,body{height:100%;overscroll-behavior-y:none;overscroll-behavior-x:none}
+body{min-height:100dvh}
+.topbar{position:fixed;top:0;left:0;right:0;height:68px;z-index:100}
+.main-content{padding-top:86px;padding-bottom:124px}
+#page-attendance,#page-expenses{padding-top:86px;padding-left:16px;padding-right:16px;max-width:900px;margin:0 auto}
+.bottom-nav{z-index:110}
+.profile-menu{top:76px;right:12px;width:190px;border:1px solid #e3e6ee;border-radius:16px;overflow:hidden;box-shadow:0 14px 34px rgba(26,31,58,.16);background:#fff}
+.profile-menu button{padding:14px 16px;font-size:15px;font-weight:650}
+.profile-menu button+button{border-top:1px solid #edf0f5}
+.profile-menu button:first-child{background:#faf9ff;color:#3029a5}
+.profile-menu button:active{background:#f1efff}
+.compact-sheet{width:min(560px,100%);max-height:min(78dvh,660px);border-radius:24px 24px 0 0;padding:0 14px 18px;background:#fbfcff;box-shadow:0 -12px 36px rgba(22,27,54,.12)}
+.compact-sheet .modal-top{height:64px;background:#fbfcff}
+.compact-sheet .modal-top h2{font-size:20px;letter-spacing:-.25px}
+.compact-sheet .modal-top small{display:block;margin-top:3px;color:#8790a4;font-size:10px}
+.compact-sheet .close-btn{width:42px;height:42px;border-radius:12px;background:#f0f2f7;color:#586174;font-size:30px;display:grid;place-items:center}
+.catalog-add{display:grid;grid-template-columns:1fr 82px;gap:8px;padding:11px 0 9px;border-bottom:1px solid #eceff4}
+.catalog-add input{min-width:0;width:100%;height:43px;padding:0 12px;border:1px solid #dfe3ea;border-radius:12px;background:#fff;outline:0;font-size:13px}
+.catalog-add .small-primary{min-height:43px;padding:8px 10px;border-radius:12px;font-size:12px}
+.catalog-list{display:flex;flex-direction:column;gap:7px;padding-top:8px;max-height:48dvh;overflow:auto;overscroll-behavior:contain}
+.catalog-row{min-height:48px;display:grid;grid-template-columns:1fr auto;align-items:center;gap:10px;padding:7px 9px 7px 12px;border:1px solid #e7eaf0;border-radius:14px;background:#fff;box-shadow:0 2px 9px rgba(31,38,71,.04)}
+.catalog-row span{font-size:14px;font-weight:650;color:#24283a;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.catalog-row .outline-btn.mini{min-height:34px;padding:6px 10px;border-radius:10px;font-size:10px;color:#8f4d55;border-color:#e7cbd0;background:#fff8f9}
+.app-info-sheet{width:min(560px,100%);max-height:min(84dvh,720px);border-radius:24px 24px 0 0;padding:0 16px 20px;background:#fbfcff}
+.app-info-sheet .modal-top{height:66px;background:#fbfcff}
+.info-content{padding:14px 2px 2px}.info-hero{padding:16px;border:1px solid #e5e8f0;border-radius:18px;background:linear-gradient(135deg,#f7f5ff,#fff);text-align:center}.info-hero img{width:170px;height:58px;object-fit:contain}.info-hero strong{display:block;margin-top:5px;font-size:18px}.info-hero span{display:block;margin-top:4px;font-size:12px;color:#7b869b}.info-points{display:grid;gap:8px;margin-top:10px}.info-points>div{padding:12px 13px;border:1px solid #e7eaf0;border-radius:14px;background:#fff}.info-points b{display:block;font-size:13px}.info-points span{display:block;margin-top:3px;font-size:11px;color:#808a9e}.policy-copy{padding:2px 2px 8px}.policy-copy p{font-size:12px;line-height:1.55;color:#68748a;margin:0 0 12px}.policy-copy h3{font-size:14px;margin:14px 0 5px;color:#252a3b}.info-actions{display:flex;justify-content:flex-end;padding-top:10px;border-top:1px solid #eceff4}.info-actions .outline-btn{min-height:42px;padding:8px 13px;border-radius:12px;font-size:11px}.rate-card{padding:18px;border:1px solid #e5e8f0;border-radius:18px;background:#fff;text-align:center}.rate-stars{display:flex;justify-content:center;gap:5px}.rate-stars button{width:44px;height:44px;border-radius:13px;background:#f2f3f8;color:#a6adbb;font-size:23px}.rate-stars button.selected{background:#fff1c8;color:#e2a321;box-shadow:0 4px 10px rgba(224,163,33,.12)}.rate-card p{margin:12px 0 7px;font-size:12px;color:#657086}.info-note{font-size:10px;line-height:1.4;color:#9098a8}
+.account-hero{display:flex;align-items:center;gap:13px;padding:16px 2px}.account-avatar{width:58px;height:58px;border-radius:18px;display:grid;place-items:center;background:linear-gradient(145deg,#5d50e6,#4134c9);color:#fff;font-weight:850;font-size:22px;box-shadow:0 7px 16px rgba(69,55,211,.18)}.account-hero strong{display:block;font-size:18px;color:#202439}.account-hero span{display:block;margin-top:3px;font-size:11px;color:#8490a5}.account-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}.account-grid>div{padding:12px;border:1px solid #e6e9f0;background:#fff;border-radius:14px}.account-grid .wide{grid-column:1/-1}.account-grid small{display:block;font-size:9px;color:#8b95a7;font-weight:750;letter-spacing:.6px}.account-grid strong{display:block;margin-top:4px;font-size:12px;color:#25293a}.profile-account-sheet .large-action{margin-top:12px;min-height:48px}
+.receipt-amount{background:#f7f8fc;border:1px solid #e0e4ec;color:#1d2235;box-shadow:none}.receipt-amount small{display:block;color:#7e889a;font-weight:750;letter-spacing:.8px;opacity:1}.receipt-amount strong{display:block;color:#28224f;font-size:32px;margin-top:4px}.receipt-amount-caption{display:block;margin-top:4px;font-size:9px;color:#8a94a7}.receipt-paid-badge{width:auto!important;height:auto!important;min-width:78px;padding:10px 12px;border:0!important;border-radius:12px!important;background:#e0f5e8;color:#178247;font-size:11px;display:inline-flex!important;align-items:center;justify-content:center;box-shadow:inset 0 1px 0 rgba(255,255,255,.8),0 4px 9px rgba(23,130,71,.10)}.receipt-row strong{color:#1d2235}
+html{scroll-behavior:auto}body{touch-action:pan-y}.main-content,#page-attendance,#page-expenses,.catalog-list,.modal-sheet,.receipt{overscroll-behavior:contain}
+@media(max-width:480px){.main-content{padding-top:82px;padding-left:14px;padding-right:14px;padding-bottom:122px}#page-attendance,#page-expenses{padding-top:82px;padding-left:14px;padding-right:14px}.topbar{height:64px}.profile-menu{top:70px;right:10px;width:180px;border-radius:14px}.compact-sheet,.app-info-sheet{padding-left:12px;padding-right:12px}.catalog-row{min-height:46px;padding-left:10px}.catalog-row span{font-size:13px}.catalog-row .outline-btn.mini{min-height:32px;font-size:9px;padding:5px 9px}.receipt-amount strong{font-size:29px}}
