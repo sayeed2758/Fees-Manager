@@ -1,15 +1,43 @@
-import { initializeApp } from 'https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js';
-import { getAuth } from 'https://www.gstatic.com/firebasejs/12.19.0/firebase-auth.js';
-import { getFirestore } from 'https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js';
-import { firebaseConfig, firebaseConfigured } from './firebase-config.js';
+import { initializeApp } from 'https://www.gstatic.com/firebasejs/12.9.0/firebase-app.js';
 
-export { firebaseConfigured };
-export let app = null;
-export let auth = null;
-export let db = null;
+import {
+  getAuth,
+  onAuthStateChanged,
+  signInWithEmailAndPassword,
+  createUserWithEmailAndPassword,
+  signOut,
+  updateProfile
+} from 'https://www.gstatic.com/firebasejs/12.9.0/firebase-auth.js';
 
-if (firebaseConfigured) {
-  app = initializeApp(firebaseConfig);
-  auth = getAuth(app);
-  db = getFirestore(app);
-}
+import {
+  getFirestore
+} from 'https://www.gstatic.com/firebasejs/12.9.0/firebase-firestore.js';
+
+import { firebaseConfig } from './firebase-config.js';
+
+export const firebaseConfigured =
+  firebaseConfig &&
+  Object.values(firebaseConfig).every(
+    value => String(value).trim() && !String(value).startsWith('YOUR_')
+  );
+
+export const app = firebaseConfigured
+  ? initializeApp(firebaseConfig)
+  : null;
+
+export const auth = firebaseConfigured
+  ? getAuth(app)
+  : null;
+
+export const db = firebaseConfigured
+  ? getFirestore(app)
+  : null;
+
+// Firebase Auth exports
+export {
+  onAuthStateChanged,
+  signInWithEmailAndPassword,
+  createUserWithEmailAndPassword,
+  signOut,
+  updateProfile
+};
