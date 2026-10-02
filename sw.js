@@ -1,23 +1,20 @@
-const CACHE_NAME = 'fee-manager-shell-v1';
-const APP_SHELL = [
-  './',
-  './index.html',
-  './manifest.json',
-  './assets/style.css',
-  './assets/app.js',
-  './assets/firebase.js',
-  './assets/firebase-data.js',
-  './assets/firebase-config.js',
-  './assets/ezee-vision-logo.png',
-  './assets/pwa-icon-192.png',
-  './assets/pwa-icon-512.png',
-  './assets/pwa-icon-512-maskable.png'
+const CACHE_NAME = 'fee-manager-pwa-v2';
+const STATIC_ASSETS = [
+  '/',
+  '/index.html',
+  '/manifest.json',
+  '/assets/style.css',
+  '/assets/app.js',
+  '/assets/ezee-vision-logo.png',
+  '/assets/pwa-icon-192.png',
+  '/assets/pwa-icon-512.png',
+  '/assets/pwa-icon-512-maskable.png'
 ];
 
 self.addEventListener('install', event => {
   event.waitUntil(
     caches.open(CACHE_NAME)
-      .then(cache => cache.addAll(APP_SHELL))
+      .then(cache => cache.addAll(STATIC_ASSETS))
       .then(() => self.skipWaiting())
   );
 });
@@ -25,7 +22,9 @@ self.addEventListener('install', event => {
 self.addEventListener('activate', event => {
   event.waitUntil(
     caches.keys()
-      .then(keys => Promise.all(keys.filter(key => key !== CACHE_NAME).map(key => caches.delete(key))))
+      .then(keys => Promise.all(
+        keys.filter(key => key !== CACHE_NAME).map(key => caches.delete(key))
+      ))
       .then(() => self.clients.claim())
   );
 });
@@ -37,6 +36,21 @@ self.addEventListener('fetch', event => {
   const url = new URL(request.url);
   if (url.origin !== self.location.origin) return;
 
+  // Always try the network first for HTML/navigation so app updates are not trapped in stale cache.
+  if (request.mode === 'navigate') {
+    event.respondWith(
+      fetch(request)
+        .then(response => {
+          const copy = response.clone();
+          caches.open(CACHE_NAME).then(cache => cache.put('/index.html', copy));
+          return response;
+        })
+        .catch(() => caches.match('/index.html'))
+    );
+    return;
+  }
+
+  // Cache-first for local static assets.
   event.respondWith(
     caches.match(request).then(cached => {
       if (cached) return cached;
@@ -47,6 +61,6 @@ self.addEventListener('fetch', event => {
         }
         return response;
       });
-    }).catch(() => caches.match('./index.html'))
+    })
   );
 });

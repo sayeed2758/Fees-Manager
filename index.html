@@ -9,9 +9,9 @@
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <meta name="apple-mobile-web-app-title" content="FEE MANAGER" />
-  <link rel="manifest" href="manifest.json" />
-  <link rel="icon" type="image/png" sizes="192x192" href="assets/pwa-icon-192.png" />
-  <link rel="apple-touch-icon" href="assets/pwa-icon-192.png" />
+  <link rel="manifest" href="/manifest.json" />
+  <link rel="icon" type="image/png" sizes="192x192" href="/assets/pwa-icon-192.png" />
+  <link rel="apple-touch-icon" href="/assets/pwa-icon-192.png" />
   <title>FEE MANAGER</title>
   <link rel="stylesheet" href="assets/style.css" />
 </head>
@@ -189,5 +189,17 @@
       });
     }
   </script>
+
+<script>
+  // FEE MANAGER PWA: register the service worker at the site root.
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', function () {
+      navigator.serviceWorker.register('/sw.js', { scope: '/' }).catch(function (error) {
+        console.warn('PWA service worker registration failed:', error);
+      });
+    });
+  }
+</script>
+
 </body>
 </html>
