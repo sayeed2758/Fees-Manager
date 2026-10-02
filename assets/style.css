@@ -347,3 +347,96 @@ button,.nav-item,.chip,.stat-card,.trial-card,.analytics-card,.recent-row,.payme
   -webkit-user-select:none;
   user-select:none;
 }
+
+
+/* Phase 10 — compact fee records, branded receipt, clear navigation icons */
+.topbar{height:68px;grid-template-columns:44px 1fr 46px;padding:0 12px;background:#fff}
+.brand-logo{width:142px;height:46px}
+.avatar-btn{width:44px;height:44px;font-size:18px}
+.icon-btn{font-size:25px;color:#25293a}
+.blue-banner{margin:-18px -16px 10px;padding:14px 16px;min-height:104px}
+.blue-banner h1{font-size:23px;line-height:1.05;margin-bottom:3px}
+.blue-banner span{font-size:13px}
+.banner-chips{gap:6px}
+.chip{padding:6px 9px;border-radius:8px;font-size:12px}
+.filter-row{gap:7px}
+.filter-row select{padding:10px 9px;border-radius:12px;font-size:14px;height:46px}
+.cards-list{gap:9px;margin-top:10px}
+.payment-card{padding:12px;border-radius:18px;border-left-width:4px}
+.payment-top{gap:8px}
+.payment-main{gap:9px}
+.payment-name{font-size:16px}
+.payment-date{font-size:11px;margin-top:3px}
+.payment-amount{font-size:21px}
+.status-pill{padding:5px 8px;font-size:11px;margin-top:5px}
+.payment-actions{gap:8px;margin-top:11px}
+.payment-actions .small-primary,.payment-actions .outline-btn{min-height:43px;padding:8px 9px;border-radius:13px;font-size:12px}
+.btn-icon{display:inline-grid;place-items:center;width:22px;height:22px;line-height:1;font-size:15px;font-weight:900}
+.bottom-nav{height:74px;background:#fff;border-top-color:#e7eaf1;box-shadow:0 -4px 18px rgba(36,42,75,.05)}
+.nav-item{gap:3px;color:#7e8ea8}
+.nav-item .nav-icon{width:28px;height:28px;display:grid;place-items:center}
+.nav-item .nav-icon svg{width:25px;height:25px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;filter:drop-shadow(0 1px 1px rgba(20,28,55,.10))}
+.nav-item small{font-size:12px;font-weight:500}
+.nav-item.active{color:#087638}
+.nav-item.active .nav-icon svg{stroke-width:2.25;filter:drop-shadow(0 1px 1px rgba(8,118,56,.12))}
+.receipt{width:min(560px,96vw);max-height:92vh;overflow:auto;border-radius:22px;box-shadow:0 18px 55px rgba(20,23,48,.22)}
+.receipt-top{padding:13px 15px;background:linear-gradient(120deg,#3026b6,#624de7);min-height:86px;align-items:center}
+.receipt-brand-wrap{display:flex;align-items:center;gap:11px;min-width:0}
+.receipt-brand-logo{width:122px;height:50px;object-fit:contain;object-position:left center;flex:0 0 auto}
+.receipt-head-copy{min-width:0}
+.receipt-head-copy strong{display:block;font-size:18px;letter-spacing:.15px}
+.receipt-head-copy span{display:block;font-size:10px;opacity:.82;margin-top:3px}
+.receipt-top>span{font-size:11px;white-space:nowrap}
+.receipt-body{padding:13px 15px 2px;display:grid;grid-template-columns:1fr 1fr;column-gap:18px}
+.receipt-row{min-height:39px;padding:8px 0;gap:9px;align-items:flex-start}
+.receipt-row span:first-child{font-size:11px;color:#7b8496;line-height:1.25}
+.receipt-row strong{font-size:12px;line-height:1.3;text-align:right;max-width:67%}
+.receipt-words{grid-column:1/-1}
+.receipt-amount{margin:8px 15px 11px;padding:12px 14px;border-radius:14px}
+.receipt-amount small{font-size:10px}
+.receipt-amount strong{font-size:29px;line-height:1.05}
+.receipt-amount b{width:46px;height:46px;padding:0;display:grid;place-items:center;border-width:2px;font-size:12px}
+.receipt-foot{padding:0 15px 8px;font-size:10px}
+.receipt-note{padding:0 15px 11px;text-align:center;color:#8a92a2;font-size:9px}
+.receipt-actions{display:grid;grid-template-columns:1fr 1.25fr 1fr;gap:7px;padding:9px 12px 12px;background:#fff;position:sticky;bottom:0;border-top:1px solid #eef0f5}
+.receipt-actions button{min-height:42px;padding:7px 8px;border-radius:12px;font-size:11px}
+.receipt-actions .btn-icon{width:20px;height:20px}
+@media(max-width:480px){
+  .topbar{height:66px;grid-template-columns:40px 1fr 44px;padding:0 10px}
+  .brand-logo{width:134px;height:44px}
+  .avatar-btn{width:42px;height:42px}
+  .icon-btn{font-size:24px}
+  .main-content{padding-top:14px}
+  .blue-banner{margin:-14px -18px 9px;padding:12px 13px;min-height:95px}
+  .blue-banner h1{font-size:21px}
+  .blue-banner span{font-size:12px}
+  .chip{font-size:11px;padding:5px 7px}
+  .filter-row select{height:44px;padding:9px 8px;font-size:13px}
+  .payment-card{padding:10px;border-radius:16px}
+  .payment-card .student-avatar{width:46px!important;height:46px!important;font-size:17px!important}
+  .payment-name{font-size:15px}
+  .payment-date{font-size:10px}
+  .payment-amount{font-size:20px}
+  .payment-actions .small-primary,.payment-actions .outline-btn{min-height:40px;font-size:11px}
+  .bottom-nav{height:72px}
+  .nav-item .nav-icon{width:27px;height:27px}
+  .nav-item .nav-icon svg{width:23px;height:23px}
+  .nav-item small{font-size:11px}
+  .receipt{width:96vw;max-height:90vh;border-radius:20px}
+  .receipt-top{min-height:78px;padding:11px 12px;gap:8px}
+  .receipt-brand-wrap{gap:8px}
+  .receipt-brand-logo{width:103px;height:42px}
+  .receipt-head-copy strong{font-size:15px}
+  .receipt-head-copy span{font-size:8px}
+  .receipt-top>span{font-size:9px}
+  .receipt-body{padding:10px 12px 0;grid-template-columns:1fr;column-gap:0}
+  .receipt-row{min-height:35px;padding:7px 0}
+  .receipt-row span:first-child{font-size:10px}
+  .receipt-row strong{font-size:11px}
+  .receipt-amount{margin:6px 12px 8px;padding:11px 12px}
+  .receipt-amount strong{font-size:27px}
+  .receipt-amount b{width:42px;height:42px;font-size:11px}
+  .receipt-foot{padding:0 12px 7px;font-size:9px}
+  .receipt-note{padding:0 12px 8px;font-size:8px}
+  .receipt-actions{grid-template-columns:1fr 1.2fr 1fr;padding:7px 9px 9px}
+}
