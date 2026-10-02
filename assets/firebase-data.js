@@ -1,4 +1,4 @@
-import { addDoc, collection, deleteDoc, doc, getDocs, onSnapshot, serverTimestamp, updateDoc, writeBatch, setDoc } from 'https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js';
+import { addDoc, collection, deleteDoc, doc, getDoc, getDocs, onSnapshot, serverTimestamp, updateDoc, writeBatch, setDoc } from 'https://www.gstatic.com/firebasejs/12.19.0/firebase-firestore.js';
 import { db } from './firebase.js';
 
 const col = (uid, name) => collection(db, 'users', uid, name);
@@ -10,6 +10,10 @@ export function subscribeStudents(uid, onData, onError) {
 }
 export function subscribeFees(uid, onData, onError) {
   return onSnapshot(col(uid, 'fees'), snap => onData(snap.docs.map(d => ({id:d.id,...d.data()})).sort(byCreated)), onError);
+}
+export async function getUserProfile(uid) {
+  const snap = await getDoc(doc(db, 'users', uid));
+  return snap.exists() ? snap.data() : null;
 }
 export async function upsertUserProfile(uid, profile) {
   await setDoc(doc(db, 'users', uid), { ...profile, updatedAt: serverTimestamp() }, { merge:true });
@@ -28,13 +32,15 @@ export async function deleteStudent(uid, id) {
   fees.docs.filter(d=>d.data().studentId===id).forEach(d=>batch.delete(d.ref));
   await batch.commit();
 }
-export async function createMissingMonthlyFees(uid, students, fees, month) {
+export async function createMissingMonthlyFees(uid, students, fees, month, options={}) {
   const existing=new Set(fees.filter(f=>f.month===month).map(f=>f.studentId));
   const batch=writeBatch(db); let created=0;
+  const dueDay=Math.min(28,Math.max(1,Number(options?.dueDay||10)));
+  const dueDate=`${month}-${String(dueDay).padStart(2,'0')}`;
   for(const s of students){
     if(existing.has(s.id)) continue;
     const feeRef=doc(col(uid,'fees'));
-    batch.set(feeRef,{studentId:s.id,month,amount:Math.max(0,Number(s.fee||0)-Number(s.discount||0)),status:'Pending',paymentDate:null,receiptNo:null,paymentMode:null,createdAt:serverTimestamp(),updatedAt:serverTimestamp()});
+    batch.set(feeRef,{studentId:s.id,month,amount:Math.max(0,Number(s.fee||0)-Number(s.discount||0)),status:'Pending',dueDate,paymentDate:null,receiptNo:null,paymentMode:null,paymentNote:null,paidAmount:null,createdAt:serverTimestamp(),updatedAt:serverTimestamp()});
     created++;
   }
   if(created) await batch.commit();
