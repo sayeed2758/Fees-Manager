@@ -36,6 +36,7 @@
       <button class="avatar-btn" id="profileBtn">A</button>
     </header>
 
+    <input id="monthPicker" type="month" aria-label="Select month" class="month-picker" />
     <main class="main-content">
       <section class="page active" id="page-home">
         <div class="page-head"><div><h1>Welcome back!</h1><p>Here's your tuition overview</p></div><button class="month-pill" id="monthBtn">🗓 <span id="currentMonthLabel">Oct 2026</span> ▾</button></div>
@@ -60,9 +61,13 @@
 
       <section class="page" id="page-reports">
         <div class="page-title-row"><div><h1>Reports</h1><p id="reportMonthLabel">Oct 2026</p></div><button class="month-pill" id="reportMonthBtn">Oct 2026 ▾</button></div>
+        <div class="report-actions"><button class="outline-btn" id="exportReportBtn">⬇ Export CSV</button><button class="small-primary" id="printReportBtn">🖨 Print Report</button></div>
         <div class="report-card"><h2>Monthly Overview</h2><div class="report-line"><span><i class="dot blue"></i>Total Fee</span><strong id="reportTotal">₹0</strong></div><div class="report-line"><span><i class="dot green"></i>Collected</span><strong id="reportCollected">₹0</strong></div><div class="report-line"><span><i class="dot red"></i>Pending</span><strong id="reportPending">₹0</strong></div><hr/><div class="collection-row"><span>Collection Rate</span><strong id="reportRate">0%</strong></div><div class="progress"><span id="rateBar"></span></div></div>
         <div class="two-mini-grid"><div class="mini-card"><strong id="reportStudentCount">0</strong><span>Total Students</span></div><div class="mini-card"><strong id="reportActiveCount">0</strong><span>Active Students</span></div></div>
+        <div class="report-card"><div class="section-title-row"><h2>Report Filters</h2><span class="count-badge" id="reportLedgerCount">0 records</span></div><input id="reportSearch" class="search-input compact" placeholder="Search by student, class, batch..." autocomplete="off"/><div class="filter-row report-filter-row"><select id="reportClassFilter"><option>All</option></select><select id="reportBatchFilter"><option>All</option></select></div></div>
         <div class="report-card"><div class="section-title-row"><h2>Pending Fees</h2><span class="count-badge" id="reportPendingCount">0</span></div><div id="pendingReportList"></div></div>
+        <div class="report-card"><div class="section-title-row"><h2>Fee Ledger</h2></div><div id="reportLedgerList"></div></div>
+        <div class="report-card"><div class="section-title-row"><h2>Collection by Payment Mode</h2></div><div id="paymentModeList"></div></div>
       </section>
     </main>
 
@@ -81,6 +86,5 @@
   </div>
   <div id="toast" class="toast"></div>
   <script type="module" src="assets/app.js"></script>
-  <script type="module" src="./firebase-config.js"></script>
 </body>
 </html>
