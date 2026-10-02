@@ -18,6 +18,26 @@ export async function getUserProfile(uid) {
 export async function upsertUserProfile(uid, profile) {
   await setDoc(doc(db, 'users', uid), { ...profile, updatedAt: serverTimestamp() }, { merge:true });
 }
+
+export function subscribeAttendance(uid, onData, onError) {
+  return onSnapshot(col(uid, 'attendance'), snap => onData(snap.docs.map(d => ({id:d.id,...d.data()}))), onError);
+}
+export async function saveAttendance(uid, record) {
+  const id = `${record.date}_${String(record.className||'').replace(/[^a-zA-Z0-9]+/g,'-')}_${String(record.batch||'all').replace(/[^a-zA-Z0-9]+/g,'-')}`;
+  await setDoc(ref(uid,'attendance',id), { ...record, updatedAt: serverTimestamp() }, { merge:true });
+  return id;
+}
+export function subscribeExpenses(uid, onData, onError) {
+  return onSnapshot(col(uid, 'expenses'), snap => onData(snap.docs.map(d => ({id:d.id,...d.data()})).sort(byCreated)), onError);
+}
+export async function addExpense(uid, expense) {
+  const r = await addDoc(col(uid,'expenses'), { ...expense, createdAt:serverTimestamp(), updatedAt:serverTimestamp() });
+  return r.id;
+}
+export async function deleteExpense(uid, id) {
+  await deleteDoc(ref(uid,'expenses',id));
+}
+
 export async function addStudent(uid, student) {
   const r = await addDoc(col(uid,'students'), { ...student, createdAt:serverTimestamp(), updatedAt:serverTimestamp() });
   return r.id;
